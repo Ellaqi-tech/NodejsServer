@@ -1,0 +1,36 @@
+var http = require('http');
+var fs = require('fs');
+
+//load image:
+//var express = require('express');
+//var app = express();
+//app.use(express.static(__dirname + 'public')); 
+//app.use('/images', express.static(__dirname + '/error404'));
+//var server = app.listen(8888);
+//reference: https://expressjs.com/en/starter/static-files.html
+
+
+function onRequest(request, response) {
+    console.log("Request made: " + request.url);
+    if(request.method == "GET") {
+        response.writeHead(200, {"Content-Type": "text/html"});
+        switch(request.url) {
+            case "/" :
+                fs.createReadStream("./index.html").pipe(response);
+                break;
+            case "/home" :
+                fs.createReadStream("./index.html").pipe(response);
+                break;
+            case "/about" :
+                fs.createReadStream("./about.html").pipe(response);
+                break;
+            case "/contact" :
+                fs.createReadStream("./contact.html").pipe(response);
+                break;
+            default :
+                fs.createReadStream("./error404.html").pipe(response);
+        }
+    }
+}
+http.createServer(onRequest).listen(8888);
+console.log("Server is waiting for guests...");
